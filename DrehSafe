@@ -1,0 +1,236 @@
+package second;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.*;
+
+/*
+ * Dieses Programm erzeugt ein Fenster, dass das kombinationsfeld eines Safes simuliert. 
+ * Das Eingabefeld rotiert seine buttons jede sekunden gegen den Uhrzeigersinn bei falscheigabe wechselt die Rotationsrichtung. 
+ * Die Eingabe erfolgt über Buttons welche mit einen String Array, in dem die kombination ist, verglichen werden.
+ * 
+ * Wird die richtige Eingabe 1-2-0-2-3-0-6-2 eingegeben endet das Programm.
+ * 
+ * 
+ * @version 1.1, 25 Mär 2021
+ * @author Marvin Voss, Pascal Brostean, Pascal Knie, Robin Eberle
+ */
+
+@SuppressWarnings("serial")
+public class DrehSafe extends JFrame implements ActionListener {
+	String[] kombination = new String[8];
+	static JFrame frm = new JFrame();
+	int count = 0;
+	JButton[] button = new JButton[10];
+	boolean wahr = false;
+
+	/*
+	 * Konstruktor des Safes
+	 * Kombinationscode wird festgelegt, Frame, Panels und Buttons werden erstellt und zugeordnet
+	 *  und die methode zum ändern der Ziffern wird aufgerufen.
+	 */
+
+	public DrehSafe() {
+		frm.setTitle("Der drehende Safe");
+
+		JPanel pNorden = new JPanel();
+		JPanel pOsten = new JPanel();
+		JPanel pSüden = new JPanel();
+		JPanel pWesten = new JPanel();
+		
+		kombination[0] = "1";
+		kombination[1] = "2";
+		kombination[2] = "0";
+		kombination[3] = "2";
+		kombination[4] = "3";
+		kombination[5] = "0";
+		kombination[6] = "6";
+		kombination[7] = "2";
+
+		for (int i = 0; i < 10; i++) {
+			button[i] = new JButton("" + i);
+			button[i].setActionCommand("" + i);
+			button[i].addActionListener(this);
+		}
+		pNorden.add(button[2]);
+		pNorden.add(button[1]);
+		pNorden.add(button[0]);
+		pOsten.add(button[9]);
+		pOsten.add(button[8]);
+		pSüden.add(button[5]);
+		pSüden.add(button[6]);
+		pSüden.add(button[7]);
+		pWesten.add(button[3]);
+		pWesten.add(button[4]);
+
+		frm.setLayout(new BorderLayout());
+		pNorden.setLayout(new BoxLayout(pNorden, BoxLayout.X_AXIS));
+		pSüden.setLayout(new BoxLayout(pSüden, BoxLayout.X_AXIS));
+		pWesten.setLayout(new BoxLayout(pWesten, BoxLayout.Y_AXIS));
+		pOsten.setLayout(new BoxLayout(pOsten, BoxLayout.Y_AXIS));
+
+		frm.add(pWesten, BorderLayout.WEST);
+		frm.add(pSüden, BorderLayout.SOUTH);
+		frm.add(pOsten, BorderLayout.EAST);
+		frm.add(pNorden, BorderLayout.NORTH);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		frm.setSize(50, 140);
+		frm.setVisible(true);
+		drehen();
+
+	}
+
+	public static void main(String[] args) {
+		DrehSafe safe = new DrehSafe();
+
+	}
+
+	/* Abgleich von eingabe und kombination.
+	 * 
+	 * @param ActionEvent zahl Gedrückter Button
+	 */
+	public void actionPerformed(ActionEvent zahl) {
+
+		if (count == 7) {
+			System.out.println("Safe geöffnet!");
+			System.exit(0);
+		}
+		if (zahl.getActionCommand().equals(kombination[count])) {
+			for (int i = 0; i < 10; i++) {
+				button[i].setBackground(Color.GREEN);
+				frm.repaint();
+			}
+			count++;
+		} else {
+			for (int i = 0; i < 10; i++) {
+				button[i].setBackground(Color.RED);
+				frm.repaint();
+			}
+			count = 0;
+			if (wahr == false) {
+				wahr = true;
+			} else {
+				wahr = false;
+			}
+
+		}
+
+	}
+
+	/**
+	 *  Methode für Zahlenwechsel der einzelnen JButton objekte durch einen switch-case
+	 * 
+	 * @param button Button der verändert werden soll.
+	 */
+	public void turn(JButton button) {
+		if (wahr == true) {
+			switch (button.getActionCommand()) {
+			case "1":
+				button.setText("2");
+				button.setActionCommand("2");
+				break;
+			case "2":
+				button.setText("3");
+				button.setActionCommand("3");
+				break;
+			case "3":
+				button.setText("4");
+				button.setActionCommand("4");
+				break;
+			case "4":
+				button.setText("5");
+				button.setActionCommand("5");
+				break;
+			case "5":
+				button.setText("6");
+				button.setActionCommand("6");
+				break;
+			case "6":
+				button.setText("7");
+				button.setActionCommand("7");
+				break;
+			case "7":
+				button.setText("8");
+				button.setActionCommand("8");
+				break;
+			case "8":
+				button.setText("9");
+				button.setActionCommand("9");
+				break;
+			case "9":
+				button.setText("0");
+				button.setActionCommand("0");
+				break;
+			case "0":
+				button.setText("1");
+				button.setActionCommand("1");
+				break;
+			}
+		} else {
+
+			switch (button.getActionCommand()) {
+			case "1":
+				button.setText("0");
+				button.setActionCommand("0");
+				break;
+			case "2":
+				button.setText("1");
+				button.setActionCommand("1");
+				break;
+			case "3":
+				button.setText("2");
+				button.setActionCommand("2");
+				break;
+			case "4":
+				button.setText("3");
+				button.setActionCommand("3");
+				break;
+			case "5":
+				button.setText("4");
+				button.setActionCommand("4");
+				break;
+			case "6":
+				button.setText("5");
+				button.setActionCommand("5");
+				break;
+			case "7":
+				button.setText("6");
+				button.setActionCommand("6");
+				break;
+			case "8":
+				button.setText("7");
+				button.setActionCommand("7");
+				break;
+			case "9":
+				button.setText("8");
+				button.setActionCommand("8");
+				break;
+			case "0":
+				button.setText("9");
+				button.setActionCommand("9");
+				break;
+			}
+		}
+	}
+
+	/**
+	 * Methode für gleichmäsiges drehen der Buttons durch die "turn"- Methode
+	 */
+	public void drehen() {
+		while (true) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			for (int i = 0; i < 10; i++) {
+				turn(button[i]);
+
+			}
+		}
+
+	}
+
+}
